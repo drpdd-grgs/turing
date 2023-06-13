@@ -53,7 +53,7 @@ public class TuringMachineConsoleService {
     }
 
     private static Band setBand(Scanner scanner, AVLTree<Character> alphabet) {
-        System.out.println("Set values of Cells in Band without spaces and delimeters (Blank Symbol is " + Constants.BLANK + "):");
+        System.out.println("Set values of Cells in Band without spaces and delimeters (Blank Symbol is '" + Constants.BLANK + "'):");
         return tryGetValueByCondition(scanner, "Band", LambdaService.getBandTransition(alphabet));
     }
 
