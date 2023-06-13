@@ -5,7 +5,7 @@ import turing.transition.Transition;
 public class TransitionTree extends AVLTree<Transition> {
 
     public TransitionTree() {
-
+        super();
     }
 
     public Transition findBySymbolToRead(char symbol) {
