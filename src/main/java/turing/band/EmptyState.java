@@ -11,13 +11,13 @@ public class EmptyState implements BandState {
     @Override
     public void addRight(char c) {
         band.head = new Cell(c);
-        band.changeState(new SingleElementState(band));
+        band.setState(new SingleElementState(band));
     }
 
     @Override
     public void addLeft(char c) {
         band.head = new Cell(c);
-        band.changeState(new SingleElementState(band));
+        band.setState(new SingleElementState(band));
     }
 
 }

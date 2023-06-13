@@ -1,8 +1,11 @@
 package turing.band;
 
-import turing.alphabet.Alphabet;
+import turing.avltree.AVLTree;
+import turing.constants.Constants;
 
-public class Band {
+import java.util.NoSuchElementException;
+
+public class Band implements Iterable<Cell> {
 
     private BandState state;
 
@@ -10,46 +13,45 @@ public class Band {
     protected Cell tail;
     private Cell current;
 
-    private final Alphabet alphabet;
-
-    public Band(String alphabetSymbols, String bandSymbols) {
-        if (bandSymbols.length() > 0 || alphabetSymbols.length() > 0) {
-            state = new EmptyState(this);
-            alphabet = new Alphabet(alphabetSymbols);
-            for (int i = 0; i < bandSymbols.length(); i++) {
-                if (alphabet.contains(bandSymbols.charAt(i))) {
-                    addRight(bandSymbols.charAt(i));
-                } else {
-                    throw new IllegalArgumentException("Alphabet is not contains symbol: " + bandSymbols.charAt(i));
-                }
+    public Band(AVLTree<Character> alphabet, String bandSymbols) {
+        state = new EmptyState(this);
+        for (int i = 0; i < bandSymbols.length(); i++) {
+            if (alphabet.contains(bandSymbols.charAt(i))) {
+                addRight(bandSymbols.charAt(i));
+            } else {
+                throw new IllegalArgumentException("Alphabet is not contains symbol: " + bandSymbols.charAt(i));
             }
-            alphabet.add(Alphabet.BLANK);
-            current = head;
-        } else {
-            throw new IllegalArgumentException("Band and alphabet must be not empty!");
         }
+        if (head == null) {
+            addRight(Constants.BLANK);
+        }
+        current = head;
     }
 
-    public Cell getCurrent() {
-        return current;
+    public char getCurrentSymbol() {
+        return current.getSymbol();
     }
 
     public void moveRight() {
         if (current.getRight() == null) {
-            addRight(Alphabet.BLANK);
+            addRight(Constants.BLANK);
         }
         current = current.getRight();
     }
 
     public void moveLeft() {
         if (current.getLeft() == null) {
-            addLeft(Alphabet.BLANK);
+            addLeft(Constants.BLANK);
         }
         current = current.getLeft();
     }
 
-    protected void changeState(BandState newState) {
+    protected void setState(BandState newState) {
         state = newState;
+    }
+
+    public void writeSymbol(char symbol) {
+        current.setSymbol(symbol);
     }
 
     private void addRight(char c) {
@@ -58,6 +60,35 @@ public class Band {
 
     private void addLeft(char c) {
         state.addLeft(c);
+    }
+
+    @Override
+    public java.util.Iterator<Cell> iterator() {
+        return new Iterator(this);
+    }
+
+    public static class Iterator implements java.util.Iterator<Cell> {
+
+        private Cell current;
+
+        protected Iterator(Band band) {
+            current = band.head;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Cell next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("There is no next element in Band");
+            }
+            Cell item = current;
+            current = current.getRight();
+            return item;
+        }
     }
 
 }

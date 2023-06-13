@@ -13,7 +13,7 @@ public class SingleElementState implements BandState {
         band.tail = new Cell(c);
         band.head.setRight(band.tail);
         band.tail.setLeft(band.head);
-        band.changeState(new MultiElementState(band));
+        band.setState(new MultiElementState(band));
     }
 
     @Override
@@ -22,7 +22,7 @@ public class SingleElementState implements BandState {
         band.head = new Cell(c);
         band.head.setRight(band.tail);
         band.tail.setLeft(band.head);
-        band.changeState(new MultiElementState(band));
+        band.setState(new MultiElementState(band));
     }
 
 }
