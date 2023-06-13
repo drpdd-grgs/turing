@@ -1,6 +1,6 @@
 package turing.transition;
 
-import turing.constants.Direction;
+import turing.constant.Direction;
 
 public class Transition implements Comparable<Transition> {
 

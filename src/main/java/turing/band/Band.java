@@ -1,9 +1,7 @@
 package turing.band;
 
 import turing.avltree.AVLTree;
-import turing.constants.Constants;
-
-import java.util.NoSuchElementException;
+import turing.constant.Constants;
 
 public class Band implements Iterable<Cell> {
 
@@ -83,7 +81,7 @@ public class Band implements Iterable<Cell> {
         @Override
         public Cell next() {
             if (!hasNext()) {
-                throw new NoSuchElementException("There is no next element in Band");
+                throw new IllegalStateException("There is no next element in the band");
             }
             Cell item = current;
             current = current.getRight();

@@ -25,6 +25,10 @@ public class State implements Comparable<State> {
         return Integer.compare(stateNum, o.getStateNum());
     }
 
+    protected boolean containsTransitionBySymbol(char symbol) {
+        return transitionSpace.findBySymbolToRead(symbol) != null;
+    }
+
     protected void addTransition(Transition transition) {
         transitionSpace.add(transition);
     }

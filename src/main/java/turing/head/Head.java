@@ -2,25 +2,28 @@ package turing.head;
 
 import turing.band.Band;
 import turing.avltree.StateTree;
-import turing.constants.Direction;
+import turing.constant.Direction;
 import turing.transition.Transition;
 
 public class Head {
 
     private static int stateCount = -1;
 
-    private final Band band;
+    private Band band;
     private final StateTree stateSpace;
     private State state;
     private boolean isNotTerminalState;
 
-    public Head(Band bandToProcess, int countOfStates, int startStateNum) {
-        band = bandToProcess;
+    public Head(int countOfStates, int startStateNum) {
         stateSpace = new StateTree();
         stateCount = 0;
         initStates(countOfStates);
         isNotTerminalState = true;
         state = stateSpace.findByStateNum(startStateNum);
+    }
+
+    public void setBand(Band bandToProcess) {
+        band = bandToProcess;
     }
 
     public void start() {
@@ -37,10 +40,13 @@ public class Head {
                                   char symbolToWrite,
                                   Direction direction) {
         State state = stateSpace.findByStateNum(stateNum);
+        if (state.containsTransitionBySymbol(symbolToRead)) {
+            throw new IllegalArgumentException("Transition for Symbol '" + symbolToRead + "' and State with num '" + stateNum + "' already exists!");
+        }
         state.addTransition(new Transition(symbolToRead, stateNumToSet, symbolToWrite, direction));
     }
 
-    protected int getStateCount() {
+    public int getStateCount() {
         return stateCount;
     }
 
