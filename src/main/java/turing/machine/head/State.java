@@ -1,7 +1,7 @@
-package turing.head;
+package turing.machine.head;
 
-import turing.avltree.TransitionTree;
-import turing.transition.Transition;
+import turing.util.avltree.TransitionTree;
+import turing.machine.transition.Transition;
 
 public class State implements Comparable<State> {
 
@@ -9,10 +9,10 @@ public class State implements Comparable<State> {
     private final Head head;
     private final TransitionTree transitionSpace;
 
-    protected State(Head headForState) {
-        head = headForState;
-        head.increaseStateCount();
-        stateNum = head.getStateCount();
+    protected State(Head head) {
+        this.head = head;
+        this.head.increaseStateCount();
+        stateNum = this.head.getStateCount();
         transitionSpace = new TransitionTree();
     }
 
@@ -21,12 +21,12 @@ public class State implements Comparable<State> {
     }
 
     @Override
-    public int compareTo(State o) {
-        return Integer.compare(stateNum, o.getStateNum());
+    public int compareTo(State state) {
+        return Integer.compare(stateNum, state.getStateNum());
     }
 
-    protected boolean containsTransitionBySymbol(char symbol) {
-        return transitionSpace.findBySymbolToRead(symbol) != null;
+    protected boolean containsTransitionByStateSymbol(char symbol) {
+        return transitionSpace.findByStateSymbol(symbol) != null;
     }
 
     protected void addTransition(Transition transition) {
@@ -34,9 +34,9 @@ public class State implements Comparable<State> {
     }
 
     protected void doTransition(char symbol) {
-        Transition transition = transitionSpace.findBySymbolToRead(symbol);
+        Transition transition = transitionSpace.findByStateSymbol(symbol);
         if (transition != null) {
-            head.writeToBand(transition.getSymbolToWrite());
+            head.setSymbolToCurrentCell(transition.getSymbolToSet());
             head.moveHead(transition.getDirection());
             head.setState(transition.getStateNumToSet());
         } else {

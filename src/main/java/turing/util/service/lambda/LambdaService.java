@@ -1,14 +1,12 @@
-package turing.service.lambda;
+package turing.util.service.lambda;
 
-import turing.avltree.AVLTree;
-import turing.band.Band;
-import turing.constant.Constants;
-import turing.constant.Direction;
-import turing.head.Head;
-import turing.transition.Transition;
+import turing.util.avltree.AVLTree;
+import turing.machine.band.Band;
+import turing.util.constant.Constants;
+import turing.util.constant.Direction;
+import turing.machine.head.Head;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LambdaService {
 
@@ -82,7 +80,7 @@ public class LambdaService {
             @Override
             public String getValue() {
                 if (!stringValue.equals("end")) {
-                    head.addTransitionRule(
+                    head.addTransition(
                             stateNumLeft,
                             matcher.group(3).charAt(0),
                             stateNumRight,

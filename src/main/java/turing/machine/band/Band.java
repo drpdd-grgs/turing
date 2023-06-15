@@ -1,23 +1,23 @@
-package turing.band;
+package turing.machine.band;
 
-import turing.avltree.AVLTree;
-import turing.constant.Constants;
+import turing.util.avltree.AVLTree;
+import turing.util.constant.Constants;
 
 public class Band implements Iterable<Cell> {
 
-    private BandState state;
+    private State state;
 
     protected Cell head;
     protected Cell tail;
     private Cell current;
 
-    public Band(AVLTree<Character> alphabet, String bandSymbols) {
+    public Band(AVLTree<Character> alphabet, String symbols) {
         state = new EmptyState(this);
-        for (int i = 0; i < bandSymbols.length(); i++) {
-            if (alphabet.contains(bandSymbols.charAt(i))) {
-                addRight(bandSymbols.charAt(i));
+        for (int i = 0; i < symbols.length(); i++) {
+            if (alphabet.contains(symbols.charAt(i))) {
+                addRight(symbols.charAt(i));
             } else {
-                throw new IllegalArgumentException("Alphabet is not contains symbol: " + bandSymbols.charAt(i));
+                throw new IllegalArgumentException("Alphabet is not contains symbol: " + symbols.charAt(i));
             }
         }
         if (head == null) {
@@ -44,20 +44,24 @@ public class Band implements Iterable<Cell> {
         current = current.getLeft();
     }
 
-    protected void setState(BandState newState) {
-        state = newState;
-    }
-
-    public void writeSymbol(char symbol) {
+    public void setSymbolToCurrentCell(char symbol) {
         current.setSymbol(symbol);
     }
 
-    private void addRight(char c) {
-        state.addRight(c);
+    public void add(char symbol) {
+        addRight(symbol);
     }
 
-    private void addLeft(char c) {
-        state.addLeft(c);
+    protected void setState(State state) {
+        this.state = state;
+    }
+
+    private void addRight(char symbol) {
+        state.addRight(symbol);
+    }
+
+    private void addLeft(char symbol) {
+        state.addLeft(symbol);
     }
 
     @Override

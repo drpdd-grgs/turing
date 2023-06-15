@@ -1,12 +1,12 @@
-package turing.service;
+package turing.util.service;
 
-import turing.avltree.AVLTree;
-import turing.band.Band;
-import turing.band.Cell;
-import turing.constant.Constants;
-import turing.head.Head;
-import turing.service.lambda.Lambda;
-import turing.service.lambda.LambdaService;
+import turing.util.avltree.AVLTree;
+import turing.machine.band.Band;
+import turing.machine.band.Cell;
+import turing.util.constant.Constants;
+import turing.machine.head.Head;
+import turing.util.service.lambda.Lambda;
+import turing.util.service.lambda.LambdaService;
 
 import java.util.Scanner;
 

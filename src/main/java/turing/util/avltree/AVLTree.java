@@ -1,4 +1,4 @@
-package turing.avltree;
+package turing.util.avltree;
 
 public class AVLTree<T extends Comparable> {
 
@@ -26,41 +26,41 @@ public class AVLTree<T extends Comparable> {
         return findRecursive(root, value);
     }
 
-    private Node addRecursive(Node<T> rootNode, T value) {
-        if (rootNode == null) {
+    private Node addRecursive(Node<T> node, T value) {
+        if (node == null) {
             return new Node(value);
         }
-        if (lessThan(value, rootNode.getValue())) {
-            rootNode.setLeft(addRecursive(rootNode.getLeft(), value));
+        if (lessThan(value, node.getValue())) {
+            node.setLeft(addRecursive(node.getLeft(), value));
         }
-        if (greaterThan(value, rootNode.getValue())) {
-            rootNode.setRight(addRecursive(rootNode.getRight(), value));
+        if (greaterThan(value, node.getValue())) {
+            node.setRight(addRecursive(node.getRight(), value));
         }
-        return rebalance(rootNode);
+        return rebalance(node);
     }
 
-    private boolean containsRecursive(Node<T> rootNode, T value) {
-        if (rootNode == null) {
+    private boolean containsRecursive(Node<T> node, T value) {
+        if (node == null) {
             return false;
         }
-        if (equals(value, rootNode.getValue())) {
+        if (equals(value, node.getValue())) {
             return true;
         }
-        return lessThan(value, rootNode.getValue())
-                ? containsRecursive(rootNode.getLeft(), value)
-                : containsRecursive(rootNode.getRight(), value);
+        return lessThan(value, node.getValue())
+                ? containsRecursive(node.getLeft(), value)
+                : containsRecursive(node.getRight(), value);
     }
 
-    private T findRecursive(Node<T> rootNode, T value) {
-        if (rootNode == null) {
+    private T findRecursive(Node<T> node, T value) {
+        if (node == null) {
             return null;
         }
-        if (equals(value, rootNode.getValue())) {
+        if (equals(value, node.getValue())) {
             return value;
         }
-        return lessThan(value, rootNode.getValue())
-                ? findRecursive(rootNode.getLeft(), value)
-                : findRecursive(rootNode.getRight(), value);
+        return lessThan(value, node.getValue())
+                ? findRecursive(node.getLeft(), value)
+                : findRecursive(node.getRight(), value);
     }
 
     private void updateHeight(Node<T> node) {

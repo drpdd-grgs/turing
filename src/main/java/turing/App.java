@@ -1,6 +1,6 @@
 package turing;
 
-import turing.service.TuringMachineConsoleService;
+import turing.util.service.TuringMachineConsoleService;
 
 public class App {
 

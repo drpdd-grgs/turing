@@ -1,6 +1,6 @@
-package turing.band;
+package turing.machine.band;
 
-public class SingleElementState implements BandState {
+public class SingleElementState implements State {
 
     private final Band band;
 
@@ -9,17 +9,17 @@ public class SingleElementState implements BandState {
     }
 
     @Override
-    public void addRight(char c) {
-        band.tail = new Cell(c);
+    public void addRight(char symbol) {
+        band.tail = new Cell(symbol);
         band.head.setRight(band.tail);
         band.tail.setLeft(band.head);
         band.setState(new MultiElementState(band));
     }
 
     @Override
-    public void addLeft(char c) {
+    public void addLeft(char symbol) {
         band.tail = band.head;
-        band.head = new Cell(c);
+        band.head = new Cell(symbol);
         band.head.setRight(band.tail);
         band.tail.setLeft(band.head);
         band.setState(new MultiElementState(band));

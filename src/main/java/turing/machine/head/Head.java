@@ -1,9 +1,9 @@
-package turing.head;
+package turing.machine.head;
 
-import turing.band.Band;
-import turing.avltree.StateTree;
-import turing.constant.Direction;
-import turing.transition.Transition;
+import turing.machine.band.Band;
+import turing.util.avltree.StateTree;
+import turing.util.constant.Direction;
+import turing.machine.transition.Transition;
 
 public class Head {
 
@@ -22,8 +22,8 @@ public class Head {
         state = stateSpace.findByStateNum(startStateNum);
     }
 
-    public void setBand(Band bandToProcess) {
-        band = bandToProcess;
+    public void setBand(Band band) {
+        this.band = band;
     }
 
     public void start() {
@@ -34,16 +34,16 @@ public class Head {
         }
     }
 
-    public void addTransitionRule(int stateNum,
-                                  char symbolToRead,
-                                  int stateNumToSet,
-                                  char symbolToWrite,
-                                  Direction direction) {
+    public void addTransition(int stateNum,
+                              char stateSymbol,
+                              int stateNumToSet,
+                              char symbolToSet,
+                              Direction direction) {
         State state = stateSpace.findByStateNum(stateNum);
-        if (state.containsTransitionBySymbol(symbolToRead)) {
-            throw new IllegalArgumentException("Transition for Symbol '" + symbolToRead + "' and State with num '" + stateNum + "' already exists!");
+        if (state.containsTransitionByStateSymbol(stateSymbol)) {
+            throw new IllegalArgumentException("Transition for Symbol '" + stateSymbol + "' and State with num '" + stateNum + "' already exists!");
         }
-        state.addTransition(new Transition(symbolToRead, stateNumToSet, symbolToWrite, direction));
+        state.addTransition(new Transition(stateSymbol, stateNumToSet, symbolToSet, direction));
     }
 
     public int getStateCount() {
@@ -60,8 +60,8 @@ public class Head {
         }
     }
 
-    protected void writeToBand(char symbol) {
-        band.writeSymbol(symbol);
+    protected void setSymbolToCurrentCell(char symbol) {
+        band.setSymbolToCurrentCell(symbol);
     }
 
     protected void moveHead(Direction direction) {

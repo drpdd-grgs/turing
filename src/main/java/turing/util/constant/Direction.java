@@ -1,12 +1,12 @@
-package turing.constant;
+package turing.util.constant;
 
 public enum Direction {
     LEFT,
     RIGHT,
     NONE;
 
-    public static Direction getDirectionByChar(char c) {
-        switch (c) {
+    public static Direction getDirectionByChar(char symbol) {
+        switch (symbol) {
             case Constants.RIGHT:
                 return RIGHT;
             case Constants.LEFT:

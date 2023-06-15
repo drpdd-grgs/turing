@@ -1,4 +1,4 @@
-package turing.band;
+package turing.machine.band;
 
 public class Cell {
 
@@ -6,16 +6,16 @@ public class Cell {
     private Cell left;
     private Cell right;
 
-    public Cell(char c) {
-        symbol = c;
+    public Cell(char symbol) {
+        this.symbol = symbol;
     }
 
     public char getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(char c) {
-        symbol = c;
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 
     public Cell getLeft() {

@@ -1,4 +1,4 @@
-package turing.avltree;
+package turing.util.avltree;
 
 public class Node<T extends Comparable> {
 
@@ -7,8 +7,8 @@ public class Node<T extends Comparable> {
     private Node right;
     private int height;
 
-    protected Node(T c) {
-        value = c;
+    protected Node(T value) {
+        this.value = value;
     }
 
     public T getValue() {

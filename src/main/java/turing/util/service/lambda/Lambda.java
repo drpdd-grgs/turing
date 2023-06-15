@@ -1,4 +1,4 @@
-package turing.service.lambda;
+package turing.util.service.lambda;
 
 public interface Lambda<T> {
 

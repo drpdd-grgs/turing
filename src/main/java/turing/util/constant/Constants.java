@@ -1,4 +1,4 @@
-package turing.constant;
+package turing.util.constant;
 
 import java.util.regex.Pattern;
 
@@ -15,6 +15,10 @@ public class Constants {
             + Constants.STATE + ")(\\d+)(.)(\\"
             + Constants.ARROW_START + ")(\\"
             + Constants.ARROW_END + ")("
-            + Constants.STATE + ")(\\d+)(.)(" + Constants.RIGHT + "|" + Constants.LEFT+ "|" + Constants.NONE + ")$");
+            + Constants.STATE + ")(\\d+)(.)("
+            + Constants.RIGHT + "|"
+            + Constants.LEFT+ "|"
+            + Constants.NONE
+            + ")$");
 
 }
