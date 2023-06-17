@@ -1,33 +1,37 @@
 package turing.machine.band;
 
-import turing.util.avltree.AVLTree;
+import turing.util.avltree.Alphabet;
 import turing.util.constant.Constants;
 
 public class Band implements Iterable<Cell> {
 
     private State state;
-
+    private final Alphabet alphabet;
     protected Cell head;
     protected Cell tail;
-    private Cell current;
+    protected Cell current;
 
-    public Band(AVLTree<Character> alphabet, String symbols) {
+    public Band(Alphabet alphabet) {
         state = new EmptyState(this);
-        for (int i = 0; i < symbols.length(); i++) {
-            if (alphabet.contains(symbols.charAt(i))) {
-                addRight(symbols.charAt(i));
-            } else {
-                throw new IllegalArgumentException("Alphabet is not contains symbol: " + symbols.charAt(i));
-            }
-        }
-        if (head == null) {
-            addRight(Constants.BLANK);
-        }
-        current = head;
+        this.alphabet = alphabet;
     }
 
-    public char getCurrentSymbol() {
-        return current.getSymbol();
+    public Band(Alphabet alphabet, String symbols) {
+        this(alphabet, symbols.toCharArray());
+    }
+
+    public Band(Alphabet alphabet, char[] symbols) {
+        this(alphabet);
+        for (char symbol : symbols) {
+            addRight(symbol);
+        }
+    }
+
+    public Band(Alphabet alphabet, Character[] symbols) {
+        this(alphabet);
+        for (char symbol : symbols) {
+            addRight(symbol);
+        }
     }
 
     public void moveRight() {
@@ -44,24 +48,26 @@ public class Band implements Iterable<Cell> {
         current = current.getLeft();
     }
 
+    public void addRight(char symbol) {
+        alphabet.validateSymbolWithThrow(symbol);
+        state.addRight(symbol);
+    }
+
+    public void addLeft(char symbol) {
+        alphabet.validateSymbolWithThrow(symbol);
+        state.addLeft(symbol);
+    }
+
+    public char getCurrentSymbol() {
+        return current.getSymbol();
+    }
+
     public void setSymbolToCurrentCell(char symbol) {
         current.setSymbol(symbol);
     }
 
-    public void add(char symbol) {
-        addRight(symbol);
-    }
-
     protected void setState(State state) {
         this.state = state;
-    }
-
-    private void addRight(char symbol) {
-        state.addRight(symbol);
-    }
-
-    private void addLeft(char symbol) {
-        state.addLeft(symbol);
     }
 
     @Override

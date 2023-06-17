@@ -10,6 +10,7 @@ import turing.util.service.lambda.LambdaService;
 
 import java.util.Scanner;
 
+// TODO: Remove. Might be used for dependency injection usage of machine.
 public class TuringMachineConsoleService {
 
     public static void start() {

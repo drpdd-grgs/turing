@@ -1,37 +1,41 @@
 package turing.machine.head;
 
 import turing.machine.band.Band;
+import turing.util.avltree.Alphabet;
 import turing.util.avltree.StateTree;
 import turing.util.constant.Direction;
-import turing.machine.transition.Transition;
 
 public class Head {
 
     private static int stateCount = -1;
 
-    private Band band;
-    private final StateTree stateSpace;
+    private final StateTree stateTree;
     private State state;
-    private boolean isNotTerminalState;
+    private boolean isTerminalState;
+    private Band band;
+    private final Alphabet alphabet;
 
-    public Head(int countOfStates, int startStateNum) {
-        stateSpace = new StateTree();
-        stateCount = 0;
+    public Head(Alphabet alphabet, int countOfStates) {
+        this(alphabet, countOfStates, 1);
+    }
+
+    public Head(Alphabet alphabet, int countOfStates, int startStateNum) {
+        this.alphabet = alphabet;
+        stateTree = new StateTree();
         initStates(countOfStates);
-        isNotTerminalState = true;
-        state = stateSpace.findByStateNum(startStateNum);
+        state = stateTree.findByStateNum(startStateNum);
+        isTerminalState = false;
+    }
+
+    public void start() {
+        validateStartCondition();
+        while (!isTerminalState) {
+            state.doTransition(band.getCurrentSymbol());
+        }
     }
 
     public void setBand(Band band) {
         this.band = band;
-    }
-
-    public void start() {
-        if (state != null) {
-            while (isNotTerminalState) {
-                state.doTransition(band.getCurrentSymbol());
-            }
-        }
     }
 
     public void addTransition(int stateNum,
@@ -39,15 +43,20 @@ public class Head {
                               int stateNumToSet,
                               char symbolToSet,
                               Direction direction) {
-        State state = stateSpace.findByStateNum(stateNum);
-        if (state.containsTransitionByStateSymbol(stateSymbol)) {
-            throw new IllegalArgumentException("Transition for Symbol '" + stateSymbol + "' and State with num '" + stateNum + "' already exists!");
-        }
-        state.addTransition(new Transition(stateSymbol, stateNumToSet, symbolToSet, direction));
+        validateStateNum(stateNum);
+        validateStateNum(stateNumToSet);
+        alphabet.validateSymbolWithThrow(stateSymbol);
+        alphabet.validateSymbolWithThrow(symbolToSet);
+        State state = stateTree.findByStateNum(stateNum);
+        state.addTransition(stateSymbol, stateNumToSet, symbolToSet, direction);
     }
 
     public int getStateCount() {
         return stateCount;
+    }
+
+    public boolean isTerminalState() {
+        return isTerminalState;
     }
 
     protected void increaseStateCount() {
@@ -56,7 +65,7 @@ public class Head {
 
     protected void setState(int stateNum) {
         if (stateNum != state.getStateNum()) {
-            state = stateSpace.findByStateNum(stateNum);
+            state = stateTree.findByStateNum(stateNum);
         }
     }
 
@@ -74,12 +83,28 @@ public class Head {
     }
 
     protected void terminate() {
-        isNotTerminalState = false;
+        isTerminalState = true;
     }
 
     private void initStates(int countOfStates) {
+        stateCount = 0;
         for (int i = 0; i < countOfStates; i++) {
-            stateSpace.add(new State(this));
+            stateTree.add(new State(this));
+        }
+    }
+
+    private void validateStateNum(int stateNum) {
+        if (stateNum < 1 && stateNum > stateCount) {
+            throw new IllegalArgumentException("Incorrect stateNum!");
+        }
+    }
+
+    private void validateStartCondition() {
+        if (state == null) {
+            throw new IllegalStateException("State for Head is not defined");
+        }
+        if (band == null) {
+            throw new IllegalStateException("Band is null");
         }
     }
 

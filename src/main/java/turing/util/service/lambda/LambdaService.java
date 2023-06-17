@@ -8,6 +8,7 @@ import turing.machine.head.Head;
 
 import java.util.regex.Matcher;
 
+// TODO: Remove. Might be used for dependency injection usage of machine.
 public class LambdaService {
 
     public static Lambda<Integer> getCountOfStatesLambda() {

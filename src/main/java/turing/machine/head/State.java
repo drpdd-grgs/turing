@@ -2,18 +2,19 @@ package turing.machine.head;
 
 import turing.util.avltree.TransitionTree;
 import turing.machine.transition.Transition;
+import turing.util.constant.Direction;
 
 public class State implements Comparable<State> {
 
     private final int stateNum;
     private final Head head;
-    private final TransitionTree transitionSpace;
+    private final TransitionTree transitionTree;
 
     protected State(Head head) {
         this.head = head;
         this.head.increaseStateCount();
         stateNum = this.head.getStateCount();
-        transitionSpace = new TransitionTree();
+        transitionTree = new TransitionTree();
     }
 
     public int getStateNum() {
@@ -25,16 +26,16 @@ public class State implements Comparable<State> {
         return Integer.compare(stateNum, state.getStateNum());
     }
 
-    protected boolean containsTransitionByStateSymbol(char symbol) {
-        return transitionSpace.findByStateSymbol(symbol) != null;
-    }
-
-    protected void addTransition(Transition transition) {
-        transitionSpace.add(transition);
+    protected void addTransition(char stateSymbol,
+                                 int stateNumToSet,
+                                 char symbolToSet,
+                                 Direction direction) {
+        validateStateSymbol(stateSymbol);
+        transitionTree.add(new Transition(stateSymbol, stateNumToSet, symbolToSet, direction));
     }
 
     protected void doTransition(char symbol) {
-        Transition transition = transitionSpace.findByStateSymbol(symbol);
+        Transition transition = transitionTree.findByStateSymbol(symbol);
         if (transition != null) {
             head.setSymbolToCurrentCell(transition.getSymbolToSet());
             head.moveHead(transition.getDirection());
@@ -42,6 +43,16 @@ public class State implements Comparable<State> {
         } else {
             head.terminate();
         }
+    }
+
+    private void validateStateSymbol(char stateSymbol) {
+        if (containsTransitionByStateSymbol(stateSymbol)) {
+            throw new IllegalArgumentException("Transition for Symbol '" + stateSymbol + "' and State with num '" + stateNum + "' already exists!");
+        }
+    }
+
+    private boolean containsTransitionByStateSymbol(char symbol) {
+        return transitionTree.findByStateSymbol(symbol) != null;
     }
 
 }
