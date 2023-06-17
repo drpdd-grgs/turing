@@ -103,19 +103,15 @@ public class AVLTree<T extends Comparable> {
         updateHeight(z);
         int balance = getBalance(z);
         if (balance > 1) {
-            if (getHeight(z.getRight().getRight()) > getHeight(z.getRight().getLeft())) {
-                z = rotateLeft(z);
-            } else {
+            if (getHeight(z.getRight().getRight()) <= getHeight(z.getRight().getLeft())) {
                 z.setRight(rotateRight(z.getRight()));
-                z = rotateLeft(z);
             }
+            z = rotateLeft(z);
         } else if (balance < -1) {
-            if (getHeight(z.getLeft().getLeft()) > getHeight(z.getLeft().getRight())) {
-                z = rotateRight(z);
-            } else {
+            if (getHeight(z.getLeft().getLeft()) <= getHeight(z.getLeft().getRight())) {
                 z.setLeft(rotateLeft(z.getLeft()));
-                z = rotateRight(z);
             }
+            z = rotateRight(z);
         }
         return z;
     }
